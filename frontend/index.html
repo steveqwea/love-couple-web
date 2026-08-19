@@ -649,6 +649,7 @@ createApp({
                     headers:{"Content-Type":"application/json"},
                     body: JSON.stringify({nickname:authForm.nickname, password:authForm.password})
                 })
+                if(!user || !user.id){ showToast(user && user.message ? user.message : "登录失败，请检查账号密码"); return }
                 currentUser.id = user.id
                 currentUser.nickname = user.nickname
                 currentUser.coupleCode = user.coupleCode
