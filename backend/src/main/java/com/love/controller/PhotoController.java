@@ -52,4 +52,18 @@ public class PhotoController {
     public void delete(@PathVariable Long id) {
         photoService.delete(id);
     }
+
+    /** 编辑照片：修改备注，可选替换图片（传了 file 就替换） */
+    @PostMapping("/{id}/update")
+    public Photo update(@PathVariable Long id,
+                        @RequestParam(value = "remark", required = false, defaultValue = "") String remark,
+                        @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
+        byte[] data = null;
+        String contentType = null;
+        if (file != null && !file.isEmpty()) {
+            data = file.getBytes();
+            contentType = file.getContentType();
+        }
+        return photoService.update(id, remark, contentType, data);
+    }
 }

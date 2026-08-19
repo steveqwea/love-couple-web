@@ -33,4 +33,27 @@ public class PhotoService {
             photoFileService.deleteByUrl(photo.getPhotoUrl());
         }
     }
+
+    /** 修改照片备注，file 不为空时同时替换图片 */
+    public Photo update(Long id, String remark, String contentType, byte[] data) {
+        Photo photo = photoMapper.selectById(id);
+        if (photo == null) {
+            throw new RuntimeException("照片不存在");
+        }
+        if (data != null && data.length > 0) {
+            // 生成新文件名存入数据库，删除旧文件
+            String oldUrl = photo.getPhotoUrl();
+            String ext = oldUrl != null && oldUrl.contains(".")
+                    ? oldUrl.substring(oldUrl.lastIndexOf(".")) : ".jpg";
+            String newUrl = "/uploads/" + java.util.UUID.randomUUID().toString().replace("-", "") + ext;
+            photoFileService.save(newUrl, contentType, data);
+            photoMapper.updateUrlAndRemark(id, newUrl, remark);
+            photoFileService.deleteByUrl(oldUrl);
+            photo.setPhotoUrl(newUrl);
+        } else {
+            photoMapper.updateRemark(id, remark);
+        }
+        photo.setRemark(remark);
+        return photo;
+    }
 }

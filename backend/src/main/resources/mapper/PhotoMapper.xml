@@ -19,4 +19,12 @@
         DELETE FROM photo WHERE id = #{id}
     </delete>
 
+    <update id="updateRemark">
+        UPDATE photo SET remark = #{remark} WHERE id = #{id}
+    </update>
+
+    <update id="updateUrlAndRemark">
+        UPDATE photo SET photo_url = #{photoUrl}, remark = #{remark} WHERE id = #{id}
+    </update>
+
 </mapper>
