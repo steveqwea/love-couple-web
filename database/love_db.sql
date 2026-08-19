@@ -39,6 +39,16 @@ CREATE TABLE `photo` (
   `upload_time` datetime DEFAULT CURRENT_TIMESTAMP
 );
 
+-- 上传文件内容表（照片/头像二进制存数据库，云端部署不丢失）
+CREATE TABLE `photo_file` (
+  `id` bigint PRIMARY KEY AUTO_INCREMENT,
+  `url` varchar(255) NOT NULL COMMENT '访问路径，如 /uploads/xxx.jpg',
+  `content_type` varchar(100) DEFAULT 'image/jpeg',
+  `data` mediumblob NOT NULL COMMENT '文件二进制内容',
+  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE KEY `uk_url` (`url`)
+) COMMENT='上传文件内容';
+
 -- 每日打卡（每人每天一次，双方都可打卡，提交后不可修改）
 CREATE TABLE `check_in` (
   `id` bigint PRIMARY KEY AUTO_INCREMENT,

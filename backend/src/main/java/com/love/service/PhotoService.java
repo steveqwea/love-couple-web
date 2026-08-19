@@ -13,6 +13,9 @@ public class PhotoService {
     @Resource
     private PhotoMapper photoMapper;
 
+    @Resource
+    private PhotoFileService photoFileService;
+
     public Photo add(Photo photo) {
         photoMapper.insert(photo);
         return photo;
@@ -23,6 +26,11 @@ public class PhotoService {
     }
 
     public void delete(Long id) {
+        Photo photo = photoMapper.selectById(id);
         photoMapper.deleteById(id);
+        // 同步删除数据库中的文件内容
+        if (photo != null) {
+            photoFileService.deleteByUrl(photo.getPhotoUrl());
+        }
     }
 }

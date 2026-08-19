@@ -15,6 +15,9 @@ uploads/
 tunnel.log
 tunnel-err.log
 
+# 大体积照片迁移 SQL（本地生成，不入库）
+database/photo_file_migration.sql
+
 # 系统
 Thumbs.db
 .DS_Store

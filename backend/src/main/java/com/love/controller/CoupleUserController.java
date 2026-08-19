@@ -2,15 +2,14 @@ package com.love.controller;
 
 import com.love.entity.CoupleUser;
 import com.love.service.CoupleUserService;
+import com.love.service.PhotoFileService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.beans.factory.annotation.Value;
 
 import javax.annotation.Resource;
 import java.util.Map;
 import java.util.HashMap;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.UUID;
 
 @RestController
@@ -20,8 +19,8 @@ public class CoupleUserController {
     @Resource
     private CoupleUserService coupleUserService;
 
-    @Value("${app.upload-dir:uploads}")
-    private String uploadDir;
+    @Resource
+    private PhotoFileService photoFileService;
 
     /** 注册 */
     @PostMapping("/register")
@@ -79,19 +78,17 @@ public class CoupleUserController {
         return coupleUserService.updateAvatar(id, avatar);
     }
 
-    /** 上传头像文件（携带 userId 时一步完成上传+存库） */
+    /** 上传头像文件（携带 userId 时一步完成上传+存库），文件内容存数据库 */
     @PostMapping("/avatar/upload")
     public Map<String, Object> uploadAvatar(@RequestParam("file") MultipartFile file,
                                             @RequestParam(value = "userId", required = false) Long userId) throws Exception {
-        File dir = new File(uploadDir, "avatar");
-        if (!dir.exists()) dir.mkdirs();
         String original = file.getOriginalFilename();
         String ext = original != null && original.contains(".")
                 ? original.substring(original.lastIndexOf(".")) : ".jpg";
         String fileName = UUID.randomUUID().toString().replace("-", "") + ext;
-        File target = new File(dir, fileName);
-        file.transferTo(target.getAbsoluteFile());
         String url = "/uploads/avatar/" + fileName;
+        // 文件二进制存数据库
+        photoFileService.save(url, file.getContentType(), file.getBytes());
         // 带 userId 时直接保存到数据库，前端只调一次接口，避免二次请求失败
         if (userId != null) {
             coupleUserService.updateAvatar(userId, url);

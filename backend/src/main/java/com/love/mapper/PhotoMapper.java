@@ -12,5 +12,7 @@ public interface PhotoMapper {
 
     List<Photo> listByCoupleCode(@Param("coupleCode") String coupleCode);
 
+    Photo selectById(@Param("id") Long id);
+
     int deleteById(@Param("id") Long id);
 }

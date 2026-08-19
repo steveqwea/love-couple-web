@@ -11,6 +11,10 @@
         SELECT * FROM photo WHERE couple_code = #{coupleCode} ORDER BY upload_time DESC
     </select>
 
+    <select id="selectById" resultType="com.love.entity.Photo">
+        SELECT * FROM photo WHERE id = #{id}
+    </select>
+
     <delete id="deleteById">
         DELETE FROM photo WHERE id = #{id}
     </delete>
