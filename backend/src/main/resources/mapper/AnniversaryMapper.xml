@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.love.mapper.AnniversaryMapper">
+
+    <insert id="insert" parameterType="com.love.entity.Anniversary" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO anniversary (couple_code, title, event_date, type, create_time)
+        VALUES (#{coupleCode}, #{title}, #{eventDate}, #{type}, NOW())
+    </insert>
+
+    <select id="listByCoupleCode" resultType="com.love.entity.Anniversary">
+        SELECT * FROM anniversary WHERE couple_code = #{coupleCode} ORDER BY event_date ASC
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM anniversary WHERE id = #{id}
+    </delete>
+
+</mapper>

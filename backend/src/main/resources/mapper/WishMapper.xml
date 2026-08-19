@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.love.mapper.WishMapper">
+
+    <insert id="insert" parameterType="com.love.entity.Wish" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO wish (couple_code, wisher, content, status, create_time)
+        VALUES (#{coupleCode}, #{wisher}, #{content}, 0, NOW())
+    </insert>
+
+    <select id="listByCoupleCode" resultType="com.love.entity.Wish">
+        SELECT * FROM wish WHERE couple_code = #{coupleCode} ORDER BY status ASC, create_time DESC
+    </select>
+
+    <update id="finish">
+        UPDATE wish SET status = 1, finish_time = NOW() WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM wish WHERE id = #{id}
+    </delete>
+
+</mapper>

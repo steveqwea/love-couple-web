@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.love.mapper.CoupleUserMapper">
+
+    <insert id="insert" parameterType="com.love.entity.CoupleUser" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO couple_user (couple_code, nickname, username, password, avatar, create_time)
+        VALUES (#{coupleCode}, #{nickname}, #{username}, #{password}, #{avatar}, NOW())
+    </insert>
+
+    <select id="findById" resultType="com.love.entity.CoupleUser">
+        SELECT * FROM couple_user WHERE id = #{id}
+    </select>
+
+    <select id="findByUsername" resultType="com.love.entity.CoupleUser">
+        SELECT * FROM couple_user WHERE username = #{username}
+    </select>
+
+    <select id="findByNickname" resultType="com.love.entity.CoupleUser">
+        SELECT * FROM couple_user WHERE nickname = #{nickname}
+    </select>
+
+    <select id="findByCoupleCode" resultType="com.love.entity.CoupleUser">
+        SELECT * FROM couple_user WHERE couple_code = #{coupleCode}
+    </select>
+
+    <update id="updateCoupleCode">
+        UPDATE couple_user SET couple_code = #{coupleCode} WHERE id = #{id}
+    </update>
+
+    <update id="updatePartner">
+        UPDATE couple_user SET partner_id = #{partnerId}, couple_code = #{coupleCode} WHERE id = #{id}
+    </update>
+
+    <update id="updateAvatar">
+        UPDATE couple_user SET avatar = #{avatar} WHERE id = #{id}
+    </update>
+
+    <update id="updatePassword">
+        UPDATE couple_user SET password = #{password} WHERE id = #{id}
+    </update>
+
+</mapper>

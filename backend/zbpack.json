@@ -1,0 +1,3 @@
+{
+  "javaArgs": "-Dserver.port=$PORT -jar target/love-backend-1.0.jar"
+}

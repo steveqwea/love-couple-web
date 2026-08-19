@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.love.mapper.CheckInMapper">
+
+    <insert id="insert" parameterType="com.love.entity.CheckIn" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO check_in (couple_code, user_id, nickname, mood, love_degree, check_date, create_time)
+        VALUES (#{coupleCode}, #{userId}, #{nickname}, #{mood}, #{loveDegree}, #{checkDate}, NOW())
+    </insert>
+
+    <select id="findByUserIdAndDate" resultType="com.love.entity.CheckIn">
+        SELECT * FROM check_in WHERE user_id = #{userId} AND check_date = #{checkDate}
+    </select>
+
+    <select id="listByCoupleCodeAndDate" resultType="com.love.entity.CheckIn">
+        SELECT * FROM check_in WHERE couple_code = #{coupleCode} AND check_date = #{checkDate} ORDER BY create_time
+    </select>
+
+    <select id="listByCoupleCode" resultType="com.love.entity.CheckIn">
+        SELECT c.*, u.avatar
+        FROM check_in c
+        LEFT JOIN couple_user u ON c.user_id = u.id
+        WHERE c.couple_code = #{coupleCode}
+        ORDER BY c.check_date DESC, c.create_time
+        LIMIT 60
+    </select>
+
+</mapper>
