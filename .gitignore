@@ -21,3 +21,4 @@ database/photo_file_migration.sql
 # 系统
 Thumbs.db
 .DS_Store
+deploy/
